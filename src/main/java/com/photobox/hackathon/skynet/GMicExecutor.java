@@ -18,7 +18,8 @@ public class GMicExecutor implements IPictureProcessor {
 	}
 
 	private String buildCommandLine(String imageIn, String imageOut, Parameters parameters) {
-		String imageEnhancerBaseFolder = "/usr/bin/";
+		//String imageEnhancerBaseFolder = "/usr/bin/";
+		String imageEnhancerBaseFolder = "/Users/ddarseyne/java/hackathon/";
 		String imageEnhancerExecName = "gmic";
 
 		File fileIn = new File(imageIn);
