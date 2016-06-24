@@ -1,30 +1,16 @@
 package com.photobox.hackathon.skynet.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDesktopPane;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import com.photobox.hackathon.skynet.GMicExecutor;
 import com.photobox.hackathon.skynet.Parameters;
+import com.photobox.hackathon.skynet.Scale2XExecutor;
 
-public class SkynetUI extends JFrame implements ActionListener 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class SkynetUI extends JFrame implements ActionListener
 {
 	public JDesktopPane 	desk;
 
@@ -40,7 +26,7 @@ public class SkynetUI extends JFrame implements ActionListener
 	private JPanel 			panelRight;
 	private JComboBox		comboTx;
 	
-	private String path = "/Users/ddarseyne/java/hackathon/img";
+	private String path = "/home/slamps/workspaces/git/skynet/src/test/resources";
 
 	private String 			strFile;
 	
@@ -121,7 +107,7 @@ public class SkynetUI extends JFrame implements ActionListener
 	{
  		JFileChooser chooser 	= new JFileChooser(path);
 
- 		chooser.setFileFilter(new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif"));
+		chooser.setFileFilter(new FileNameExtensionFilter("JPG & PNG Images", "jpg", "PNG"));
  	    
  	    int returnVal = chooser.showOpenDialog(this);
  	    
@@ -145,20 +131,20 @@ public class SkynetUI extends JFrame implements ActionListener
 		
 			ImageIcon ii = new ImageIcon(path + "/" + strFile);
 			//ii.se
-			labelImageLeft.setPreferredSize(new Dimension(420, 300));
+//			labelImageLeft.setPreferredSize(new Dimension(420, 300));
 	
-			Image img = ii.getImage();
-			BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-			Graphics g = bi.createGraphics();
-			g.drawImage(img, 0, 0, 420, 300, null);
-			ImageIcon newIcon = new ImageIcon(bi);
+//			Image img = ii.getImage();
+//			BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+//			Graphics g = bi.createGraphics();
+//			g.drawImage(img, 0, 0, 420, 300, null);
+//			ImageIcon newIcon = new ImageIcon(bi);
 			
 			/*while (labelImageLeft.getSize().getWidth() < 420)
 				labelImageLeft.setPreferredSize(new Dimension((int) labelImageLeft.getSize().getWidth() * 2, 
 						(int) labelImageLeft.getSize().getHeight() * 2)); */
 
-			//labelImageLeft.setIcon(ii);
-			labelImageLeft.setIcon(newIcon);
+			labelImageLeft.setIcon(ii);
+//			labelImageLeft.setIcon(newIcon);
 
 			System.out.println("w=" + ii.getIconWidth() + ", h=" + ii.getIconHeight());
 			
@@ -174,28 +160,48 @@ public class SkynetUI extends JFrame implements ActionListener
 		}
 		
 
-		if (e.getSource() == butQueryTx)
-		{
+		if (e.getSource() == butQueryTx) {
 			if (comboTx.getSelectedItem().equals("Rescale"))
 				exacuteScale();
 			else if (comboTx.getSelectedItem().equals("Filter"))
 				executeFilter();
 		}
-		
+
 	}
 
 
-	public void exacuteScale()
-	{
-		
-	}
+	public void exacuteScale() {
+		Scale2XExecutor executor = new Scale2XExecutor();
+			Parameters parameters = new Parameters();
+		parameters.setMainParameter(" -k 4 ");
+
+			executor.execute(path + "/" + strFile, path + "/" + strFile +"-modified", parameters);
+			
+			System.out.println("execute has returned");
+			
+			ImageIcon iim = new ImageIcon(path + "/" + strFile+"-modified");
+			
+			System.out.println("w=" + iim.getIconWidth() + ", h=" + iim.getIconHeight());
+			
+			labelImageRight.setIcon(iim);
+
+		//labelImageRight.setPreferredSize(new Dimension(iim.getIconWidth(), iim.getIconHeight()));
+			
+			jifTree.getContentPane().doLayout();		
+			jifTree.updateUI();		
+			splitCenter.doLayout();		
+			splitCenter.updateUI();
+			panelLeft.updateUI();
+			panelLeft.doLayout();
+		}
 
 	public void executeFilter()
 	{
 		GMicExecutor executor = new GMicExecutor();
 		Parameters parameters = new Parameters();
 		//parameters.setMainParameter(" -rodilius ");
-		parameters.setMainParameter(" -texturize_paper ");
+//		parameters.setMainParameter(" -texturize_paper ");
+		parameters.setMainParameter("  -normalize_local 5  -glow 2  "-rotate 13 ");
 		
 		executor.execute(path + "/" + strFile, path + "/" + strFile +"-modified", parameters);
 		

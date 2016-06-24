@@ -7,7 +7,7 @@ import java.util.List;
  * Created by slamps on 23/06/16.
  */
 public class Parameters {
-	String mainParameter;
+	String mainParameter = "";
 	List<String> subParameters = new ArrayList<>();
 
 	public void setMainParameter(String mainParameter) {

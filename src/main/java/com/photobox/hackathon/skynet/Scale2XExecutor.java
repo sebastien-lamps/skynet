@@ -18,8 +18,8 @@ public class Scale2XExecutor implements IPictureProcessor {
 	}
 
 	private String buildCommandLine(String imageIn, String imageOut, Parameters parameters) {
-		String imageEnhancerBaseFolder = "/usr/bin/";
-		String imageEnhancerExecName = "convert";
+		String imageEnhancerBaseFolder = "/usr/local/bin/";
+		String imageEnhancerExecName = "scalex";
 
 		File fileIn = new File(imageIn);
 		File fileOut = new File(imageOut);
@@ -29,13 +29,12 @@ public class Scale2XExecutor implements IPictureProcessor {
 		
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(imageEnhancerBaseFolder).append(imageEnhancerExecName)
-				.append(" \"").append(fileIn.getAbsolutePath()).append("\"")
-				.append(" -magnify -magnify ");
-		
-		//for (String subParameter : parameters.getSubParameters()) {
-		//	stringBuilder.append(" ").append(subParameter);
-		//}
-		stringBuilder.append(" \"").append(fileOut.getAbsolutePath()).append("\"");
+				.append(" ").append(fileIn.getAbsolutePath()).append("")
+				.append(" ").append(parameters.getMainParameter());
+		for (String subParameter : parameters.getSubParameters()) {
+			stringBuilder.append(" ").append(subParameter);
+		}
+		stringBuilder.append(" ").append(fileOut.getAbsolutePath()).append("");
 
 
 		logger.debug(stringBuilder.toString());

@@ -19,9 +19,9 @@ public class GMicExecutor implements IPictureProcessor {
 
 	private String buildCommandLine(String imageIn, String imageOut, Parameters parameters) {
 		//String imageEnhancerBaseFolder = "/usr/bin/";
-		String imageEnhancerBaseFolder = "/Users/ddarseyne/java/hackathon/";
+		String imageEnhancerBaseFolder = "src/main/bin/linux/";
 		String imageEnhancerExecName = "gmic";
-
+//./gmic ../src/test/resources/in/in.jpg ../src/test/resources/in/mask.png --inpaint_patchmatch[-2] [-1] -remove[-2] -output out.png
 		File fileIn = new File(imageIn);
 		File fileOut = new File(imageOut);
 		if (!fileIn.exists()) throw new PictureProcessorException("Image in not found");
