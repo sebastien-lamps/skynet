@@ -1,6 +1,7 @@
 package com.photobox.hackathon.skynet.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -70,26 +71,18 @@ public class SkynetUI extends JFrame implements ActionListener
  		this.labelImage			= new JLabel();			
  		this.panelLeft			= new JPanel();
  		this.panelRight			= new JPanel();
- 		this.labelImageLeft		= new JLabel();
- 		this.labelImageRight	= new JLabel();
- 		this.comboTx			= new JComboBox(new String[] {"Tx"});
+ 		this.labelImageLeft		= new JLabel("Image first");
+ 		this.labelImageRight	= new JLabel("Image last");
+ 		this.comboTx			= new JComboBox(new String[] {"Rescale", "Filter"});
  		
+ 		labelImageLeft.setPreferredSize(new Dimension(420, 300));
+ 		labelImageRight.setPreferredSize(new Dimension(420, 300));
  		
- 		//panelLeft.setPreferredSize(new Dimension(300, 300));
- 		//panelRight.setPreferredSize(new Dimension(300, 300));
+ 		panelLeft.add(labelImageLeft);
+ 		panelRight.add(labelImageRight);
  		
  		this.splitCenter		= new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelLeft, panelRight);
 		splitCenter.setDividerLocation(0.50);
-		//splitCenter.setRes
-		
-		//labelImageLeft.setPreferredSize(new Dimension(300, 300));
-		//labelImageRight.setPreferredSize(new Dimension(300, 300));
-		
-		panelLeft.add(labelImageLeft);
-		panelRight.add(labelImageRight);
- 		
-		
- 		//labelImage.setPreferredSize(new Dimension(100, 20));
  		
  		jifTree.setPreferredSize(new Dimension(900, 700));
  		
@@ -147,15 +140,16 @@ public class SkynetUI extends JFrame implements ActionListener
 			System.out.println("fetch strFile=" + strFile);
 		
 			ImageIcon ii = new ImageIcon(path + "/" + strFile);
+			//labelImageLeft.setPreferredSize(new Dimension(ii.getIconWidth(), ii.getIconHeight()));
 	
+			while (labelImageLeft.getSize().getWidth() < 420)
+				labelImageLeft.setPreferredSize(new Dimension((int) labelImageLeft.getSize().getWidth() * 2, 
+						(int) labelImageLeft.getSize().getHeight() * 2));
+
 			labelImageLeft.setIcon(ii);
-			
-			//panelLeft.add(new JLabel(ii), BorderLayout.CENTER);
+			//labelImageLeft.setL
 			
 			System.out.println("w=" + ii.getIconWidth() + ", h=" + ii.getIconHeight());
-			
-			//panelLeft.setPreferredSize(new Dimension(ii.getIconWidth(), ii.getIconHeight()));
-			labelImageLeft.setPreferredSize(new Dimension(ii.getIconWidth(), ii.getIconHeight()));
 			
 			//jifTree.pack();
 			jifTree.getContentPane().doLayout();		
@@ -171,33 +165,44 @@ public class SkynetUI extends JFrame implements ActionListener
 
 		if (e.getSource() == butQueryTx)
 		{
-			GMicExecutor executor = new GMicExecutor();
-			Parameters parameters = new Parameters();
-			//parameters.setMainParameter(" -rodilius ");
-			parameters.setMainParameter(" -texturize_paper ");
-			
-			executor.execute(path + "/" + strFile, path + "/" + strFile +"-modified", parameters);
-			
-			System.out.println("execute has returned");
-			
-			ImageIcon iim = new ImageIcon(path + "/" + strFile+"-modified");
-			
-			System.out.println("w=" + iim.getIconWidth() + ", h=" + iim.getIconHeight());
-			
-			labelImageRight.setIcon(iim);
-			labelImageRight.setPreferredSize(new Dimension(iim.getIconWidth(), iim.getIconHeight()));
-			
-			jifTree.getContentPane().doLayout();		
-			jifTree.updateUI();		
-			splitCenter.doLayout();		
-			splitCenter.updateUI();
-			panelLeft.updateUI();
-			panelLeft.doLayout();
+			if (comboTx.getSelectedItem().equals("Rescale"))
+				exacuteScale();
+			else if (comboTx.getSelectedItem().equals("Filter"))
+				executeFilter();
 		}
-	
 		
 	}
 
 
+	public void exacuteScale()
+	{
+		
+	}
 
+	public void executeFilter()
+	{
+		GMicExecutor executor = new GMicExecutor();
+		Parameters parameters = new Parameters();
+		//parameters.setMainParameter(" -rodilius ");
+		parameters.setMainParameter(" -texturize_paper ");
+		
+		executor.execute(path + "/" + strFile, path + "/" + strFile +"-modified", parameters);
+		
+		System.out.println("execute has returned");
+		
+		ImageIcon iim = new ImageIcon(path + "/" + strFile+"-modified");
+		
+		System.out.println("w=" + iim.getIconWidth() + ", h=" + iim.getIconHeight());
+		
+		labelImageRight.setIcon(iim);
+		
+		//labelImageRight.setPreferredSize(new Dimension(iim.getIconWidth(), iim.getIconHeight()));
+		
+		jifTree.getContentPane().doLayout();		
+		jifTree.updateUI();		
+		splitCenter.doLayout();		
+		splitCenter.updateUI();
+		panelLeft.updateUI();
+		panelLeft.doLayout();
+	}
 }

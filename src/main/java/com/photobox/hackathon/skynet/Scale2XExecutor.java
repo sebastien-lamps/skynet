@@ -34,7 +34,7 @@ public class Scale2XExecutor implements IPictureProcessor {
 		
 		//for (String subParameter : parameters.getSubParameters()) {
 		//	stringBuilder.append(" ").append(subParameter);
-		}
+		//}
 		stringBuilder.append(" \"").append(fileOut.getAbsolutePath()).append("\"");
 
 
