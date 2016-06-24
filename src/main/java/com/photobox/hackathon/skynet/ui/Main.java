@@ -17,8 +17,8 @@ public class Main
 	{
 		SkynetUI view 		= new SkynetUI();
 		
-		view.setSize(IViewConstants.INT_APPLI_WIDTH, IViewConstants.INT_APPLI_HEIGHT);
-		view.setLocation(100, 0);
+		view.setSize(1920, 1080);
+		view.setLocation(0, 0);
 		view.setVisible(true);
 	}
 

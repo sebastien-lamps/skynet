@@ -1,11 +1,13 @@
 package com.photobox.hackathon.skynet.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -71,21 +73,23 @@ public class SkynetUI extends JFrame implements ActionListener
  		this.labelImage			= new JLabel();			
  		this.panelLeft			= new JPanel();
  		this.panelRight			= new JPanel();
- 		this.labelImageLeft		= new JLabel("Image first");
- 		this.labelImageRight	= new JLabel("Image last");
+ 		this.labelImageLeft		= new JLabel(" ");
+ 		this.labelImageRight	= new JLabel(" ");
  		this.comboTx			= new JComboBox(new String[] {"Rescale", "Filter"});
  		
- 		labelImageLeft.setPreferredSize(new Dimension(420, 300));
- 		labelImageRight.setPreferredSize(new Dimension(420, 300));
+ 		labelImageLeft.setPreferredSize(new Dimension(900, 1000));
+ 		labelImageRight.setPreferredSize(new Dimension(900, 1000));
  		
  		panelLeft.add(labelImageLeft);
  		panelRight.add(labelImageRight);
  		
  		this.splitCenter		= new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelLeft, panelRight);
 		splitCenter.setDividerLocation(0.50);
- 		
- 		jifTree.setPreferredSize(new Dimension(900, 700));
- 		
+		
+		
+ 		//jifTree.setPreferredSize(new Dimension(1920, 1080));
+		jifTree.setPreferredSize(new Dimension(1920, 1080));
+		
  		butQueryFile.addActionListener(this);
  		butQueryTx.addActionListener(this);
  		
@@ -140,15 +144,22 @@ public class SkynetUI extends JFrame implements ActionListener
 			System.out.println("fetch strFile=" + strFile);
 		
 			ImageIcon ii = new ImageIcon(path + "/" + strFile);
-			//labelImageLeft.setPreferredSize(new Dimension(ii.getIconWidth(), ii.getIconHeight()));
+			//ii.se
+			labelImageLeft.setPreferredSize(new Dimension(420, 300));
 	
-			while (labelImageLeft.getSize().getWidth() < 420)
-				labelImageLeft.setPreferredSize(new Dimension((int) labelImageLeft.getSize().getWidth() * 2, 
-						(int) labelImageLeft.getSize().getHeight() * 2));
-
-			labelImageLeft.setIcon(ii);
-			//labelImageLeft.setL
+			Image img = ii.getImage();
+			BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+			Graphics g = bi.createGraphics();
+			g.drawImage(img, 0, 0, 420, 300, null);
+			ImageIcon newIcon = new ImageIcon(bi);
 			
+			/*while (labelImageLeft.getSize().getWidth() < 420)
+				labelImageLeft.setPreferredSize(new Dimension((int) labelImageLeft.getSize().getWidth() * 2, 
+						(int) labelImageLeft.getSize().getHeight() * 2)); */
+
+			//labelImageLeft.setIcon(ii);
+			labelImageLeft.setIcon(newIcon);
+
 			System.out.println("w=" + ii.getIconWidth() + ", h=" + ii.getIconHeight());
 			
 			//jifTree.pack();
